@@ -5,3 +5,9 @@
 - use App to setup application
 - edit habbit name (and target?)
 - message and indicator habbit is done
+- use mutation inside model
+- clone to pass data outside
+- use util to extract data from form
+- incapsulate (separate) ui event handlers from model event handlers
+- use modal before day deletion
+- use twig tpl for modal base markup

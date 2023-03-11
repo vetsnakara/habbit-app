@@ -1,39 +1,15 @@
 import { nanoid } from "nanoid";
 
-// todo: use mutation inside model
-// todo: clone to pass data outside
+import { Model } from "./core/Model";
+import { ModelEvents } from "./constants/events";
 
-export class Model {
-  static events = {
-    addHabbit: "model:addHabbit",
-    removeHabbit: "model:removeHabbit",
-    addHabbitDay: "model:addHabbitDay",
-    editHabbitDay: "model:editHabbitDay",
-    removeHabbitDay: "model:removeHabbitDay",
-    selectHabbit: "model:selectHabbit",
-  };
-
-  constructor({ data = {}, events }) {
-    this.data = data;
-    this.events = events;
-  }
-
-  get() {
-    return JSON.parse(JSON.stringify(this.data));
-  }
-
-  set(data) {
-    Object.assign(this.data, data);
-  }
-
-  // specified methods
-  // todo: extract to child class
+export class AppModel extends Model {
   setActiveHabbit(activeHabbitId) {
     this.set({ activeHabbitId });
 
     const activeHabbit = this.getActiveHabbit();
 
-    this.events.trigger(Model.events.selectHabbit, activeHabbit);
+    this.events.trigger(ModelEvents.selectHabbit, activeHabbit);
   }
 
   getHabbits() {
@@ -69,7 +45,7 @@ export class Model {
     const [removedHabbit] = habbits.splice(index, 1);
     this.data.activeHabbitId = null;
 
-    this.events.trigger(Model.events.removeHabbit, removedHabbit);
+    this.events.trigger(ModelEvents.removeHabbit, removedHabbit);
   }
 
   addHabbit(habbitData) {
@@ -83,7 +59,7 @@ export class Model {
       habbits: [...this.data.habbits, habbit],
     });
 
-    this.events.trigger(Model.events.addHabbit, habbit);
+    this.events.trigger(ModelEvents.addHabbit, habbit);
   }
 
   addDay(comment) {
@@ -101,7 +77,7 @@ export class Model {
 
     this.set({ habbits });
 
-    this.events.trigger(Model.events.addHabbitDay, day);
+    this.events.trigger(ModelEvents.addHabbitDay, day);
   }
 
   editDay({ index, comment }) {
@@ -116,7 +92,7 @@ export class Model {
 
     this.set({ habbits });
 
-    this.events.trigger(Model.events.editHabbitDay, { index, day });
+    this.events.trigger(ModelEvents.editHabbitDay, { index, day });
   }
 
   removeDay(dayIndex) {
@@ -130,7 +106,7 @@ export class Model {
 
     this.set({ habbits });
 
-    this.events.trigger(Model.events.removeHabbitDay, dayIndex);
+    this.events.trigger(ModelEvents.removeHabbitDay, dayIndex);
   }
 
   getHabbitById(id) {

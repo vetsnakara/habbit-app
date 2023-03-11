@@ -1,14 +1,15 @@
 import { twig } from "twig";
 
-import { Model } from "./Model";
-import { Events } from "./Events";
-import { Api } from "./Api";
+import { App as AppCore } from "./core";
 
-import { AddHabbitView } from "./views/AddHabbit.view";
-import { PanelView } from "./views/Panel.view";
-import { HeaderView } from "./views/Header.view";
-import { DaysListView } from "./views/DaysList.view";
-import { NoHabbitView } from "./views/NoHabbit.view";
+import {
+  AddHabbitView,
+  DaysListView,
+  HeaderView,
+  NoHabbitView,
+  PanelView,
+} from "./views";
+import { AppModel } from "./AppModel";
 
 // todo: place somewhere
 const tplElements = document.querySelectorAll("[type='x-tpl']");
@@ -24,60 +25,55 @@ const templates = Array.from(tplElements).reduce((acc, el) => {
   };
 }, {});
 
-console.log("templates", templates);
+const viewsConfig = {
+  panel: {
+    Component: PanelView,
+    selector: ".panel",
+  },
+  addHabbit: {
+    Component: AddHabbitView,
+    selector: ".cover",
+  },
+  header: {
+    Component: HeaderView,
+    selector: ".header",
+  },
+  daysList: {
+    Component: DaysListView,
+    selector: ".activeHabbit",
+  },
+  noHabbit: {
+    Component: NoHabbitView,
+    selector: ".noHabbitMessage",
+  },
+};
 
-export class App {
-  constructor() {
-    this.api = new Api();
-    this.events = new Events();
-  }
-
-  async init() {
+export class App extends AppCore {
+  async initModel() {
     const { data: habbits = [] } = await this.api.get();
 
-    const data = {
-      activeHabbitId: habbits[1].id,
-      habbits,
-    };
-
-    this.model = new Model({
-      data,
+    this.model = new AppModel({
+      data: {
+        habbits,
+        activeHabbitId: habbits[1].id,
+      },
       events: this.events,
     });
+  }
 
-    new PanelView({
-      el: document.querySelector(".panel"),
-      templates,
-      model: this.model,
-      events: this.events,
-    });
-
-    new AddHabbitView({
-      el: document.querySelector(".cover"),
-      templates,
-      model: this.model,
-      events: this.events,
-    });
-
-    new HeaderView({
-      el: document.querySelector(".header"),
-      templates,
-      model: this.model,
-      events: this.events,
-    });
-
-    new DaysListView({
-      el: document.querySelector(".activeHabbit"),
-      templates,
-      model: this.model,
-      events: this.events,
-    });
-
-    new NoHabbitView({
-      el: document.querySelector(".noHabbitMessage"),
-      templates,
-      model: this.model,
-      events: this.events,
-    });
+  // todo: place to App?
+  initViews() {
+    this.views = Object.entries(viewsConfig).reduce(
+      (acc, [name, { Component, selector }]) => ({
+        ...acc,
+        [name]: new Component({
+          el: document.querySelector(selector),
+          model: this.model,
+          events: this.events,
+          templates,
+        }),
+      }),
+      {}
+    );
   }
 }

@@ -1,33 +1,9 @@
-import { Model } from "../Model";
+import { View } from "../core";
+import { ModelEvents } from "../constants/events";
 
-// todo: use util to extract data from form
-// todo: incapsulate (separate) ui event handlers from model event handlers
-// todo: use modal before day deletion
-
-export class DaysListView {
-  constructor({ el, model, templates, events }) {
-    this.el = el;
-    this.model = model;
-    this.templates = templates;
-    this.events = events;
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onAddDay = this.onAddDay.bind(this);
-    this.onEditDay = this.onEditDay.bind(this);
-    this.onRemoveDay = this.onRemoveDay.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
-    this.render = this.render.bind(this);
-
-    this.el.addEventListener("submit", this.handleSubmit);
-    this.el.addEventListener("click", this.handleClick);
-    this.el.addEventListener("dblclick", this.handleDoubleClick);
-
-    this.events.on(Model.events.selectHabbit, this.render);
-    this.events.on(Model.events.removeHabbit, this.render);
-    this.events.on(Model.events.addHabbitDay, this.onAddDay);
-    this.events.on(Model.events.editHabbitDay, this.onEditDay);
-    this.events.on(Model.events.removeHabbitDay, this.onRemoveDay);
+export class DaysListView extends View {
+  constructor(options) {
+    super(options);
 
     this.daysListEl = this.el.querySelector(".daysList");
     this.addDayEl = this.el.querySelector(".addDay");
@@ -35,6 +11,28 @@ export class DaysListView {
     this.edit = false;
 
     this.render();
+  }
+
+  bindMethods() {
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onAddDay = this.onAddDay.bind(this);
+    this.onEditDay = this.onEditDay.bind(this);
+    this.onRemoveDay = this.onRemoveDay.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    this.render = this.render.bind(this);
+  }
+
+  addEventHandlers() {
+    this.el.addEventListener("submit", this.handleSubmit);
+    this.el.addEventListener("click", this.handleClick);
+    this.el.addEventListener("dblclick", this.handleDoubleClick);
+
+    this.events.on(ModelEvents.selectHabbit, this.render);
+    this.events.on(ModelEvents.removeHabbit, this.render);
+    this.events.on(ModelEvents.addHabbitDay, this.onAddDay);
+    this.events.on(ModelEvents.editHabbitDay, this.onEditDay);
+    this.events.on(ModelEvents.removeHabbitDay, this.onRemoveDay);
   }
 
   handleSubmit(event) {

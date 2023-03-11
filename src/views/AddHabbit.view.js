@@ -1,14 +1,9 @@
+import { View } from "../core";
 import { Popup } from "../components/Popup";
+import { ViewEvents } from "../constants/events";
 
-// todo: use twig tpl for modal base markup
-
-export class AddHabbitView {
-  constructor({ el, model, templates, events }) {
-    this.el = el;
-    this.model = model;
-    this.templates = templates;
-    this.events = events;
-
+export class AddHabbitView extends View {
+  init() {
     this.popup = new Popup({
       el: this.el,
       selectors: {
@@ -18,13 +13,16 @@ export class AddHabbitView {
       },
       classHidden: "cover_hidden",
     });
+  }
 
+  bindMethods() {
     this.handleModalOpen = this.handleModalOpen.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    this.events.on("view:openAddHabbitModal", this.handleModalOpen);
-
+  addEventHandlers() {
     this.el.addEventListener("submit", this.handleSubmit);
+    this.events.on(ViewEvents.openAddHabbitModal, this.handleModalOpen);
   }
 
   handleModalOpen() {

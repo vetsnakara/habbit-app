@@ -150,10 +150,6 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* .habbit:not(:last-child) {
-  margin-bottom: 10px;
-} */
-
 .habbit__day {
   background: #fbfaff;
   border-radius: 10px 0 0 10px;
@@ -355,10 +351,6 @@ h2 {
 .popup__form button[type="submit"] {
   width: 200px;
 }
-
-/* .main {
-  height: 100%;
-} */
 
 .noHabbitMessage {
   height: 100%;

@@ -1,19 +1,21 @@
-import { Model } from "../Model";
+import { View } from "../core";
+import { ModelEvents } from "../constants/events";
 
-export class NoHabbitView {
-  constructor({ el, model, templates, events }) {
-    this.el = el;
-    this.model = model;
-    this.templates = templates;
-    this.events = events;
-
-    this.render = this.render.bind(this);
-
-    this.events.on(Model.events.removeHabbit, this.render);
-    this.events.on(Model.events.selectHabbit, this.render);
-    this.events.on(Model.events.addHabbit, this.render);
-
+export class NoHabbitView extends View {
+  constructor(options) {
+    super(options);
     this.render();
+  }
+
+  bindMethods() {
+    // todo: bind render in parent class?
+    this.render = this.render.bind(this);
+  }
+
+  addEventHandlers() {
+    this.events.on(ModelEvents.removeHabbit, this.render);
+    this.events.on(ModelEvents.selectHabbit, this.render);
+    this.events.on(ModelEvents.addHabbit, this.render);
   }
 
   render() {

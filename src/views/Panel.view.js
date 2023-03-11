@@ -1,26 +1,25 @@
-import { Model } from "../Model";
+import { View } from "../core";
+import { ModelEvents } from "../constants/events";
 
-export class PanelView {
-  constructor({ el, model, templates, events }) {
-    this.el = el;
-    this.model = model;
-    this.templates = templates;
-    this.events = events;
-
-    // add view listeners
-    this.el.addEventListener("click", this.handleClick.bind(this));
-
-    // add model listeners
-    this.events.on(Model.events.addHabbit, this.handleAddHabbit.bind(this));
-    this.events.on(
-      Model.events.removeHabbit,
-      this.handleRemoveHabbit.bind(this)
-    );
-
+export class PanelView extends View {
+  constructor(options) {
+    super(options);
     this.render();
   }
 
-  // root view click handler
+  bindMethods() {
+    this.handleClick = this.handleClick.bind(this);
+    this.handleAddHabbit = this.handleAddHabbit.bind(this);
+    this.handleRemoveHabbit = this.handleRemoveHabbit.bind(this);
+  }
+
+  addEventHandlers() {
+    this.el.addEventListener("click", this.handleClick);
+
+    this.events.on(ModelEvents.addHabbit, this.handleAddHabbit);
+    this.events.on(ModelEvents.removeHabbit, this.handleRemoveHabbit);
+  }
+
   handleClick(event) {
     const actionEl = event.target.closest("[data-action]");
     if (!actionEl) return;
@@ -37,7 +36,6 @@ export class PanelView {
     }
   }
 
-  // select habbit
   selectHabbit(activeHabbitId) {
     this.model.setActiveHabbit(activeHabbitId);
 

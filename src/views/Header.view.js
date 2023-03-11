@@ -1,26 +1,27 @@
-import { Model } from "../Model";
+import { View } from "../core";
+import { ModelEvents } from "../constants/events";
 
-export class HeaderView {
-  constructor({ el, model, templates, events }) {
-    this.el = el;
-    this.model = model;
-    this.templates = templates;
-    this.events = events;
+export class HeaderView extends View {
+  constructor(options) {
+    super(options);
+    this.render();
+  }
 
-    // todo: use bindMethods([...])
-    this.renderSelectedHabbit = this.renderSelectedHabbit.bind(this);
-    this.onHabbitDaysChange = this.onHabbitDaysChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+  bindMethods() {
     this.render = this.render.bind(this);
 
+    this.handleClick = this.handleClick.bind(this);
+    this.renderSelectedHabbit = this.renderSelectedHabbit.bind(this);
+    this.onHabbitDaysChange = this.onHabbitDaysChange.bind(this);
+  }
+
+  addEventHandlers() {
     this.el.addEventListener("click", this.handleClick);
 
-    this.events.on(Model.events.selectHabbit, this.render);
-    this.events.on(Model.events.removeHabbit, this.render);
-    this.events.on(Model.events.addHabbitDay, this.onHabbitDaysChange);
-    this.events.on(Model.events.removeHabbitDay, this.onHabbitDaysChange);
-
-    this.render();
+    this.events.on(ModelEvents.selectHabbit, this.render);
+    this.events.on(ModelEvents.removeHabbit, this.render);
+    this.events.on(ModelEvents.addHabbitDay, this.onHabbitDaysChange);
+    this.events.on(ModelEvents.removeHabbitDay, this.onHabbitDaysChange);
   }
 
   handleClick(event) {
