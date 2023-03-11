@@ -1,0 +1,7 @@
+- use Router
+- create multiuser app (registration / authorization)
+- удаление привычки
+- make screen Привычка не выбрана
+- use App to setup application
+- edit habbit name (and target?)
+- message and indicator habbit is done

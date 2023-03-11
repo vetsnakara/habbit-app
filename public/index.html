@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <title>Habbit App</title>
+  </head>
+  <body>
+    <!-- TODO: dont'use classes form js selection (use data attrs) -->
+
+    <div class="app">
+      <div class="panel"></div>
+      <div class="content">
+        <header class="header"></header>
+        <main class="main">
+          <div class="activeHabbit">
+            <div class="daysList"></div>
+            <div class="addDay"></div>
+          </div>
+          <div class="noHabbitMessage"></div>
+        </main>
+      </div>
+    </div>
+
+    <!-- Add habbit modal -->
+    <div class="cover cover_hidden">
+      <div class="popup">
+        <div class="popup__content"></div>
+        <button class="popup__close">
+          <img src="images/close.svg" alt="" />
+        </button>
+      </div>
+    </div>
+
+    <script id="panel" type="x-tpl">
+      <img class="logo" src="images/logo.svg" alt="Логотип Habbit App" />
+      <nav class="menu">
+        <div class="menu__list"></div>
+        <button data-action="addHabbit" class="menu__add">
+          <img src="images/add.svg" alt="Добавить приычку" />
+        </button>
+      </nav>
+    </script>
+
+    <script id="header" type="x-tpl">
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <h1 class="header__habbit-name"></h1>
+        <button data-action="removeHabbit" style="margin-left: 10px;">Удалить</button>
+      </div>
+      <div class="progress">
+        <div class="progress__text">
+          <div class="progress__name">Прогресс</div>
+          <div class="progress__percent"></div>
+        </div>
+        <div class="progress__bar">
+          <div class="progress__cover-bar"></div>
+        </div>
+      </div>
+    </script>
+
+    <script id="habbitButton" type="x-tpl">
+      <button
+        data-action="selectHabbit"
+        data-habbit-id="{{id}}" class="menu__item"
+      >
+        <img src="images/{{icon}}.svg" />
+      </button>
+    </script>
+
+    <script id="addHabbitModal" type="x-tpl">
+      <h2>Новая привычка</h2>
+
+      <div class="icon-label">Иконка</div>
+
+      <form class="popup__form">
+        <div class="icon-select">
+          <div>
+            <input type="radio" name="icon" id="iconSport" value="sport"/>
+            <label for="iconSport" class="icon">
+              <img src="images/sport.svg" />
+            </label>
+          </div>
+          <div>
+            <input type="radio" name="icon" id="iconWater" value="water"/>
+            <label for="iconWater" class="icon">
+              <img src="images/water.svg" />
+            </label>
+          </div>
+          <div>
+            <input type="radio" name="icon" id="iconFood" value="food"/>
+            <label for="iconFood" class="icon">
+              <img src="images/food.svg" />
+            </label>
+          </div>
+        </div>
+
+        <input type="text" value="Моя новая привычка" name="name" placeholder="Название" autocomplete="off"/>
+        <input type="text" value="10" name="target" placeholder="Цель" autocomplete="off"/>
+
+        <button class="button" type="submit">Добавить</button>
+      </form>
+    </script>
+
+    <script id="day" type="x-tpl">
+      <div data-day-index="{{index}}" class="habbit">
+        <div class="habbit__day">День {{index + 1}}</div>
+        <div class="habbit__comment">{{comment}}</div>
+        <button data-action="removeDay" class="habbit__delete">
+          <img src="images/delete.svg" alt="Удалить" />
+        </button>
+      </div>
+    </script>
+
+    <script id="dayInput" type="x-tpl">
+      <div class="habbit">
+        <div class="habbit__day">День {{index + 1}}</div>
+        <form class="habbit__form">
+          <div class="habbit__input">
+            <input
+              type="hidden"
+              name="index"
+              value="{{index}}"
+            />
+            <input
+              class="input_icon"
+              type="text"
+              name="comment"
+              placeholder="Комментарий"
+              autocomplete="off"
+              value="{{comment}}"
+            />
+            <img class="input__icon" src="images/comment.svg" alt="" />
+          </div>
+          <button>Готово</button>
+        </form>
+      </div>
+    </script>
+
+    <script id="noHabbitMessage" type="x-tpl">
+      <div>
+        Выберите привычку или создайте новую =)
+      </div>
+    </script>
+
+    <script type="module" src="main.bundle.js"></script>
+  </body>
+</html>
