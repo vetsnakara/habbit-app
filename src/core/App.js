@@ -1,20 +1,33 @@
+// todo: use core app events separately
+import { ModelEvents } from "../constants/events";
 import { Events } from "./Events";
-import { Api } from "./Api";
 
 export class App {
-  constructor() {
-    this.api = new Api();
-    this.events = new Events();
+  constructor({ model, events, templates, viewsConfig }) {
+    this.model = model; //! check exist
+    this.events = events; //! check exist
+    this.templates = templates; //! check exist
+    this.viewsConfig = viewsConfig; //! check exist
 
-    this.init();
+    this.views = null; // assigned after model init
   }
 
-  async init() {
-    await this.initModel();
-    this.initViews();
+  init() {
+    this.events.on(ModelEvents.init, () => this.initViews());
   }
 
-  async initModel() {}
-
-  initViews() {}
+  initViews() {
+    this.views = Object.entries(this.viewsConfig).reduce(
+      (acc, [name, { Component, selector }]) => ({
+        ...acc,
+        [name]: new Component({
+          el: document.querySelector(selector),
+          model: this.model,
+          events: this.events,
+          templates: this.templates,
+        }),
+      }),
+      {}
+    );
+  }
 }

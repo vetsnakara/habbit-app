@@ -44,8 +44,6 @@ export class AddHabbitView extends View {
 
     // todo: validation
 
-    console.log(habbitData);
-
     this.model.addHabbit(habbitData);
 
     this.popup.close();

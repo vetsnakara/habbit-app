@@ -1,19 +1,35 @@
 import axios from "axios";
 
-const API_ROOT = "http://localhost:8000";
-
-// todo: extract parent and child class functionality
-// todo: add events here (loading, error ...)
+// todo: use config to configure Api
 export class Api {
-  constructor() {
+  constructor(config) {
+    const { baseURL } = config;
+
     this.request = axios.create({
+      baseURL,
       headers: {
         Authorization: "123",
       },
     });
   }
 
-  async get() {
-    return this.request.get(`${API_ROOT}/habbits?_embed=days`);
+  get(url) {
+    return this.request.get(url);
+  }
+
+  post(url, data) {
+    return this.request.post(url, data);
+  }
+
+  put(url, data) {
+    return this.request.put(url, data);
+  }
+
+  patch(url, data) {
+    return this.request.patch(url, data);
+  }
+
+  delete(url) {
+    return this.request.delete(url);
   }
 }

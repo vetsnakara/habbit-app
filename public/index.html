@@ -110,8 +110,8 @@
     </script>
 
     <script id="day" type="x-tpl">
-      <div data-day-index="{{index}}" class="habbit">
-        <div class="habbit__day">День {{index + 1}}</div>
+      <div data-day-id="{{id}}" class="habbit">
+        <div class="habbit__day">День {{dayNum}}</div>
         <div class="habbit__comment">{{comment}}</div>
         <button data-action="removeDay" class="habbit__delete">
           <img src="images/delete.svg" alt="Удалить" />
@@ -120,14 +120,14 @@
     </script>
 
     <script id="dayInput" type="x-tpl">
-      <div class="habbit">
-        <div class="habbit__day">День {{index + 1}}</div>
+      <div data-day-id="{{id}}" class="habbit">
+        <div class="habbit__day">День {{dayNum}}</div>
         <form class="habbit__form">
           <div class="habbit__input">
             <input
               type="hidden"
-              name="index"
-              value="{{index}}"
+              name="id"
+              value="{{id}}"
             />
             <input
               class="input_icon"

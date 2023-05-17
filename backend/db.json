@@ -1,50 +1,10 @@
 {
-  "habbits": [
-    {
-      "id": "DRq3TGJsTrjmVV-toU6Lo",
-      "icon": "sport",
-      "name": "Отжимания",
-      "target": 5
-    },
-    {
-      "id": "jRQ-DXy8ijR7tqTy-kSvN",
-      "icon": "food",
-      "name": "Правильное питание",
-      "target": 2
-    }
-  ],
-  "days": [
-    {
-      "dayNum": 1,
-      "habbitId": "DRq3TGJsTrjmVV-toU6Lo",
-      "comment": "Первый подход дался тяжело"
-    },
-    {
-      "dayNum": 2,
-      "habbitId": "DRq3TGJsTrjmVV-toU6Lo",
-      "comment": "Второй уже проще"
-    },
-    {
-      "dayNum": 3,
-      "habbitId": "DRq3TGJsTrjmVV-toU6Lo",
-      "comment": "Третий подход"
-    },
-    {
-      "dayNum": 1,
-      "habbitId": "jRQ-DXy8ijR7tqTy-kSvN",
-      "comment": "Круто!"
-    }
-  ],
+  "habbits": [],
+  "days": [],
   "users": [
     {
       "id": 1,
       "username": "user",
-      "password": "123",
-      "role": "USER"
-    },
-    {
-      "id": 2,
-      "username": "admin",
       "password": "123",
       "role": "ADMIN"
     }

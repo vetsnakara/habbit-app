@@ -12,7 +12,7 @@ export class View {
     // this.render();
   }
 
-  init() {}
+  init() {} // optional method
 
   bindMethods() {
     // todo: bind render here?

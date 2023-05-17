@@ -41,10 +41,8 @@ export class PanelView extends View {
 
     Array.from(this.menuEl.children).forEach((currHabbitButtonEl) => {
       const habbitId = currHabbitButtonEl.getAttribute("data-habbit-id");
-      currHabbitButtonEl.classList.toggle(
-        "menu__item_active",
-        activeHabbitId === habbitId
-      );
+      const isActive = activeHabbitId == habbitId;
+      currHabbitButtonEl.classList.toggle("menu__item_active", isActive);
     });
   }
 
@@ -70,7 +68,6 @@ export class PanelView extends View {
     const { habbits, activeHabbitId } = this.model.get();
 
     this.el.innerHTML = this.templates.panel.render();
-
     this.menuEl = this.el.querySelector(".menu__list");
 
     habbits.forEach((habbit) => {
@@ -78,10 +75,9 @@ export class PanelView extends View {
       this.menuEl.insertAdjacentHTML("beforeend", habbitButtonContent);
 
       const habbitButtonEl = this.menuEl.lastElementChild;
-      habbitButtonEl.classList.toggle(
-        "menu__item_active",
-        activeHabbitId === habbit.id
-      );
+      const isActive = habbit.id == activeHabbitId;
+
+      habbitButtonEl.classList.toggle("menu__item_active", isActive);
     });
 
     return this;

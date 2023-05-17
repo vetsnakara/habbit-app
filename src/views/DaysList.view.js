@@ -43,48 +43,41 @@ export class DaysListView extends View {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
-    const { comment } = data;
-    const index = Number(data.index);
+    const { id, comment } = data;
 
-    const isNew = index === days.length;
-    console.log("isNew", isNew);
-
-    if (isNew) {
+    if (!id) {
       this.model.addDay(comment);
       return;
     }
 
     // edit
-    this.model.editDay({ index, comment });
+    this.model.editDay(data);
   }
 
   handleDoubleClick(event) {
-    const dayEl = event.target.closest("[data-day-index]");
+    const dayEl = event.target.closest("[data-day-id]");
     if (!dayEl) return;
 
-    const index = Number(dayEl.getAttribute("data-day-index"));
+    const id = Number(dayEl.getAttribute("data-day-id"));
     const { days } = this.model.getActiveHabbit();
 
-    const { comment } = days[index];
+    const day = days.find((day) => day.id === id);
 
-    dayEl.outerHTML = this.templates.dayInput.render({
-      index,
-      comment,
-    });
+    dayEl.outerHTML = this.templates.dayInput.render(day);
   }
 
   handleClick(event) {
     const actionEl = event.target.closest("[data-action]");
     if (!actionEl) return;
 
-    const dayEl = actionEl.closest("[data-day-index]");
+    const dayEl = actionEl.closest("[data-day-id]");
 
     const action = actionEl.getAttribute("data-action");
-    const dayIndex = dayEl.getAttribute("data-day-index");
+    const dayId = dayEl.getAttribute("data-day-id");
 
     switch (action) {
       case "removeDay":
-        return this.handleRemoveDay(dayIndex);
+        return this.handleRemoveDay(dayId);
     }
   }
 
@@ -92,9 +85,9 @@ export class DaysListView extends View {
     this.model.removeDay(dayIndex);
   }
 
-  onRemoveDay(dayIndex) {
-    const dayElements = this.daysListEl.children;
-    dayElements[dayIndex].remove();
+  onRemoveDay(dayId) {
+    const dayEl = this.daysListEl.querySelector(`[data-day-id="${dayId}"]`);
+    dayEl.remove();
     this.renderAddDay();
   }
 
@@ -112,16 +105,14 @@ export class DaysListView extends View {
     this.renderAddDay();
   }
 
-  onEditDay({ index, day: { comment } }) {
-    console.log("onEditDay", index, comment);
+  onEditDay(day) {
+    const { id } = day;
+    console.log("id", id);
 
-    const dayElements = this.daysListEl.children;
-    const dayEl = dayElements[index];
+    const dayEl = this.daysListEl.querySelector(`[data-day-id="${id}"]`);
+    console.log("dayEl", dayEl);
 
-    dayEl.outerHTML = this.templates.day.render({
-      index,
-      comment,
-    });
+    dayEl.outerHTML = this.templates.day.render(day);
   }
 
   renderAddDay() {
@@ -130,7 +121,7 @@ export class DaysListView extends View {
     this.addDayEl.style.display = isDone ? "none" : "block";
 
     const addDayContent = this.templates.dayInput.render({
-      index: days.length,
+      dayNum: days.length + 1,
     });
 
     this.addDayEl.innerHTML = "";
@@ -150,11 +141,8 @@ export class DaysListView extends View {
     const { days } = activeHabbit;
 
     this.daysListEl.innerHTML = "";
-    days.forEach((day, index) => {
-      const dayContent = this.templates.day.render({
-        ...day,
-        index,
-      });
+    days.forEach((day) => {
+      const dayContent = this.templates.day.render(day);
 
       this.daysListEl.insertAdjacentHTML("beforeend", dayContent);
     });

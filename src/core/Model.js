@@ -1,11 +1,24 @@
+import { ModelEvents } from "../constants/events";
+
 export class Model {
-  constructor({ data = {}, events }) {
-    this.data = data;
-    this.events = events;
+  constructor({ events, api }) {
+    this.events = events; //! check exist
+    this.api = api; //! check exist
+
+    this.init();
+  }
+
+  async init() {
+    await this.setData();
+    this.events.trigger(ModelEvents.init);
+  }
+
+  async setData() {
+    this.data = {};
   }
 
   get() {
-    return JSON.parse(JSON.stringify(this.data));
+    return this.data;
   }
 
   set(data) {
